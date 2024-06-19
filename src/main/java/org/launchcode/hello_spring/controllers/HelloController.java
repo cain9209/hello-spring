@@ -2,55 +2,46 @@ package org.launchcode.hello_spring.controllers;
 
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 
 @Controller
+@ResponseBody
+@RequestMapping("hello")
 public class HelloController {
 
     @GetMapping //Get request calls method welcomePage then returns with @ResponceBody//
-    @ResponseBody
     public String welcomePage() {
         return "Welcome to LaunchCode!";
     }
 
-//    @GetMapping("hello")
-//    @ResponseBody
-//    public String hello(){
-//        return "Hello, Spring";
-//    }
-
+    // handles request that are not "Zack" //
     @GetMapping("goodbye")
-    @ResponseBody
     public String returnGoodbye() {
-        return "Thank you for visiting LaunchCode!";
+        return "Thank you for visiting LaunchCode please leave!";
     }
 
-// Video two, creating Query Parameters for Dynamic Web Form//
-    // http://localhost:8080/hello?name=Zack //
-
-    @GetMapping("hello")
-    @ResponseBody
+    // We have to create a form this way until templates are introduced later on//
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public String helloWithQueryParam(@RequestParam String name) {
-        if (name.equals("zack")) {
-            return "Hello " + name + "!";
-        } else {
-            return name + "Please Leave!";
-        }
-    }
-
-    // Handles Request of the form /hello/launchCode http://localhost:8080/hello/zack//
-    @GetMapping("hello/{name}")
-    @ResponseBody
-    public String queryWithPathParameter(@PathVariable String name) {
-        name = name.toLowerCase();
-        if (name.equals("zack")) {
-            return "Hello " + name + "!";
+        if (name.equals("Zack")) {
+            return "Hello " + name + " Welcome to learning Get and Post request!";
         } else {
             return returnGoodbye();
-
         }
+
+    }
+
+    // Form get info from /hello and then post the info back to /hello hence the @RequestMapping//
+    @GetMapping("form")
+    public String helloForm() {
+        return "<html>" +
+                "<body>" +
+                "<form action='hello' method='Post'>" +
+                "<input type='text' name='name'>" +
+                "<input type='submit' value='Greet Me'>" +
+                "</form>" +
+                "</body>" +
+                "</html>";
     }
 }
