@@ -45,6 +45,7 @@ public class HelloController {
     @GetMapping("hello/{name}")
     @ResponseBody
     public String queryWithPathParameter(@PathVariable String name) {
+        name = name.toLowerCase();
         if (name.equals("zack")) {
             return "Hello " + name + "!";
         } else {
