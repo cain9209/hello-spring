@@ -49,6 +49,7 @@ public class HelloController {
             return "Hello " + name + "!";
         } else {
             return returnGoodbye();
+
         }
     }
 }
