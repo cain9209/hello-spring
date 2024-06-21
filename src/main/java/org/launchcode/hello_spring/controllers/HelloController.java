@@ -1,6 +1,6 @@
 package org.launchcode.hello_spring.controllers;
 
-
+import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,18 +22,27 @@ public class HelloController {
         return "Thank you for visiting LaunchCode please leave!";
     }
 
-    // We have to create a form this way until templates are introduced later on//
-    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST},value="hello")
-    @ResponseBody
-    public String helloWithQueryParam(@RequestParam String name) {
-        return "Hello " + name + " Welcome to learning Get and Post request!";
 
-
-    }
-
-    // Form get info from /hello and then post the info back to /hello hence the @RequestMapping//
+    // retreive the themplate/form with a getmethod//
     @GetMapping("form")
     public String getForm() {
         return "form"; // return name of the static template //
     }
+
+    // map the request of the parameter to /hello and then add the attribute name to the view  and return form//
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "hello")
+    public String helloWithQueryParam(@RequestParam String name, Model model) {
+        String greeting = "Hello " + name + " how are you today?";
+        model.addAttribute("greeting", greeting);
+        return "hello";
+    }
+
+    // same controller as early but at /name//
+    @GetMapping("hello/{name}")
+    public String helloAgain(@PathVariable String name, Model model) {
+        model.addAttribute("greeting", "Hello " + name + "!");
+        return "hello";
+    }
+
+
 }
